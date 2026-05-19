@@ -9,6 +9,6 @@ class Message(BaseModel):
 class RequestBody(BaseModel):
     model: str=Field(...,description="The identifier of the model to use for inference.")
     messages: list[Message]=Field(...,description="A list of messages, where each message is a Message object containing the role and content.")
-    max_tokens: int=Field(500,description="The maximum number of tokens to generate in the response.")
+    max_tokens: int=Field(512,description="The maximum number of tokens to generate in the response.")
     temperature: float=Field(default=0.7,ge=0.0,le=2.0,description="The sampling temperature to use for generation. Higher values mean more random output.")
     simulate_crash: Optional[bool] = False

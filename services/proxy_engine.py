@@ -47,15 +47,18 @@ async def monitor_provider_health():
 async def _execute_gemini_fallback(request_body: RequestBody) -> str:
     """Bulletproof fallback using pure strings to prevent SDK typing errors."""
     try:
-        user_prompt = request_body.messages[-1].content
-        system_instruction = "You are a helpful assistant that provides concise answers to questions."
+        effective_max_tokens = max(request_body.max_tokens, 512)
+        conversation = "\n".join(
+            f"{msg.role}: {msg.content}" for msg in request_body.messages
+        )
+        system_instruction = "You are a helpful assistant. Provide complete, well-formed answers."
         
         fallback_response = await gemini_client.aio.models.generate_content(
             model="gemini-2.5-flash",
-            contents=user_prompt,
+            contents=conversation,
             config=types.GenerateContentConfig(
                 system_instruction=system_instruction,
-                max_output_tokens=request_body.max_tokens,
+                max_output_tokens=effective_max_tokens,
                 temperature=request_body.temperature
             )
         )
@@ -80,6 +83,7 @@ async def call_primary_proxy(request_body: RequestBody) -> tuple[str, str]:
         return fallback_text, "gemini"
 
     try:
+        effective_max_tokens = max(request_body.max_tokens, 512)
         if request_body.simulate_crash:
             raise Exception("Chaos Mode Activated: Intentional provider crash!")
         messages = [{"role": msg.role,  "content": msg.content} for msg in request_body.messages]
@@ -87,7 +91,7 @@ async def call_primary_proxy(request_body: RequestBody) -> tuple[str, str]:
             primary_client.chat.completions.create(
                 model=request_body.model, 
                 messages=messages,
-                max_tokens=request_body.max_tokens,
+                max_tokens=effective_max_tokens,
                 temperature=request_body.temperature
             ),
             timeout=5.0

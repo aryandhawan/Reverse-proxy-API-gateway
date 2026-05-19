@@ -56,7 +56,6 @@ with tab_console:
         payload = {
             "model": selected_model, 
             "messages": [{"role": "user", "content": user_prompt}], 
-            "max_tokens": 200, 
             "temperature": 0.7,
             "simulate_crash": simulate_crash 
         } 

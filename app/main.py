@@ -3,7 +3,8 @@ from fastapi import FastAPI
 from app.core.state import health_status
 from api.routes import router
 from app.core.db import init_db_pool, close_db_pool
-from app.core.redis_client import check_redis_health,redis_client
+from app.core import redis_client
+from app.core.redis_client import check_redis_health
 import asyncio
 from services.proxy_engine import monitor_provider_health
 
@@ -20,7 +21,8 @@ async def lifespan(app: FastAPI):
 
     print("Shutting down the Gateway infrastructure")
     await close_db_pool()
-    await redis_client.redis_pool.close()
+    if hasattr(redis_client.redis_pool, "close"):
+        await redis_client.redis_pool.close()
 app = FastAPI(
     title="Tandem AI Gateway Proxy", 
     description="High-throughput LLM routing with Redis state management.",
