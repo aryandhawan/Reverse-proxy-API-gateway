@@ -1,4 +1,5 @@
 import time
+import os
 from dotenv import load_dotenv
 import altair as alt
 import streamlit as st
@@ -7,9 +8,9 @@ import pandas as pd
 import psycopg2
 
 # --- CONFIGURATION ---
-st.set_page_config(page_title="Gateway Command Center", page_icon="📡", layout="wide")
-GATEWAY_URL = "http://localhost:8000/v1/chat/completions"
 load_dotenv()
+st.set_page_config(page_title="Gateway Command Center", page_icon="📡", layout="wide")
+GATEWAY_URL = os.getenv("GATEWAY_URL", "http://localhost:8000/v1/chat/completions")
 from app.core import db as db_module
 DB_URL = db_module.DATABASE_URL
 

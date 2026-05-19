@@ -9,8 +9,6 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: gateway_telemetry
-    ports:
-      - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
 
@@ -18,8 +16,6 @@ services:
     image: redis:7-alpine
     container_name: redis_cache
     restart: always # if the vm reboots it will automatically restart
-    ports:
-      - "6379:6379"
     # Removed the redis volume completely as discussed!
 
   fastapi_gateway:
@@ -57,8 +53,10 @@ services:
       - DB_HOST=db
       - DB_PORT=5432
       - DB_NAME=gateway_telemetry
+      - GATEWAY_URL=http://fastapi_gateway:8000/v1/chat/completions
     depends_on: 
       - db
+      - fastapi_gateway
 
 volumes:
   pgdata:
