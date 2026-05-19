@@ -10,3 +10,4 @@ requests
 streamlit
 openai
 psycopg2-binary
+gunicorn

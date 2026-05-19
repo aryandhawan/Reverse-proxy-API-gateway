@@ -1,0 +1,22 @@
+# 1. THE BASE
+# We use the exact same lightweight Python image for consistency.
+FROM python:3.11-slim
+
+# 2. THE WORKSPACE
+WORKDIR /app
+
+# 3. THE CACHE OPTIMIZATION
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 4. THE CODE
+COPY . .
+
+# 5. THE EXPOSURE
+# This is documentation for developers, letting them know this container expects traffic on 8501.
+EXPOSE 8501
+
+# 6. THE PRODUCTION RUNNER (The Streamlit Magic)
+# --server.address=0.0.0.0 is the most important part. It tells Streamlit to listen to 
+# all incoming IP addresses (from Docker Compose and Azure), not just its internal localhost.
+CMD ["streamlit", "run", "dashboard.py", "--server.port=8501", "--server.address=0.0.0.0"]
