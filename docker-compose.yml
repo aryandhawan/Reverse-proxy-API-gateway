@@ -5,8 +5,8 @@ services:
     image: postgres:15-alpine
     container_name: gateway_db
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: securepassword123
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Aryan2006%
       POSTGRES_DB: gateway_telemetry
     ports:
       - "5432:5432"
