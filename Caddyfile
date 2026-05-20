@@ -1,0 +1,8 @@
+app.tandem-ai.tech{
+	reverse_proxy streamlit_dashboard:8501
+}
+
+api.tandem-ai.tech{
+	reverse_proxy ai_gateway:8000
+}
+
