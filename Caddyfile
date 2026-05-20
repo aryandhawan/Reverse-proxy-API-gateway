@@ -5,4 +5,3 @@ app.tandem-ai.tech{
 api.tandem-ai.tech{
 	reverse_proxy ai_gateway:8000
 }
-

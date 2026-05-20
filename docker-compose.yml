@@ -71,5 +71,22 @@ services:
       - db
       - fastapi_gateway
 
+  caddy:
+    image: caddy:latest
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - fastapi_gateway    # FIXED: Points to the service name now!
+      - streamlit_dashboard
+
+# FIXED: Moved completely to the left margin!
 volumes:
   pgdata:
+  caddy_data:
+  caddy_config:
