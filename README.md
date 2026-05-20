@@ -66,7 +66,7 @@ To run the entire multi-container architecture locally:
 
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/yourusername/ai-proxy-gateway.git](https://github.com/yourusername/ai-proxy-gateway.git)
+   git clone https://github.com/aryandhawan/Reverse-proxy-API-gateway.git
    cd ai-proxy-gateway
 
   ## 🧠 Lessons Learned
